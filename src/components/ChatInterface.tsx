@@ -121,7 +121,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ onQuizGenerated }) => {
       }));
 
       const url = extractUrls(userMsg.text);
-      const ytDetails = [];
+      const transcript = [];
 
       if(url.length > 0) {
         const res = await fetch("/api/yt-transcript", {
@@ -131,11 +131,11 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ onQuizGenerated }) => {
         
         const data = await res.json();
 
-        if(res) ytDetails.push(data.text)
+        if(res) transcript.push(data.transcript)
         else throw new Error("Failed to fetch transcript");
       }
 
-      const formData = { history , newMessage : ytDetails.length > 0 ? userMsg.text + " youtubeUrlVideoDetails : " + ytDetails[0] : userMsg.text, files }
+      const formData = { history , newMessage : transcript.length > 0 ? userMsg.text + " youtubeUrlVideoDetails : " + transcript[0] : userMsg.text, files }
       const response = await fetch("/api/generate-text", {
         method: "POST",
         headers: {
@@ -194,7 +194,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ onQuizGenerated }) => {
     try {
       const url = extractUrls(prompt);
 
-      const ytDetails = [];
+      const transcript = [];
 
       if(url.length > 0) {
         const res = await fetch("/api/yt-transcript", {
@@ -204,13 +204,13 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ onQuizGenerated }) => {
         
         const data = await res.json();
 
-        if(res) ytDetails.push(data.text)
+        if(res) transcript.push(data.transcript)
         else throw new Error("Failed to fetch transcript");
       }
 
       const formdata = {
         files,
-        instructions : ytDetails.length > 0 ? `${prompt} youtubeUrlVideoDetails : ${ytDetails[0]}` : prompt || "Generate a quiz based on the attached files."
+        instructions : transcript.length > 0 ? `${prompt} youtubeUrlVideoDetails : ${transcript[0]}` : prompt || "Generate a quiz based on the attached files."
       }
 
       const response = await fetch("/api/generate-quiz", {
