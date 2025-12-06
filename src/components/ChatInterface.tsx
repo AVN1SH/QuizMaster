@@ -178,7 +178,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ onQuizGenerated }) => {
     try {
       const formdata = {
         files,
-        prompt : prompt || "Generate a quiz based on the attached files."
+        instructions : prompt || "Generate a quiz based on the attached files."
       }
 
       const response = await fetch("/api/generate-quiz", {
