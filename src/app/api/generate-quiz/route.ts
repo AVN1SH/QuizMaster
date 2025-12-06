@@ -33,9 +33,12 @@ export async function POST(req : Request) {
       User Instructions: "${instructions}"
 
       Rules:
-      1. If the provided documents or instructions contain sufficient information to create a quiz, populate the 'quiz' field in the JSON response.
-      2. If the user input is gibberish, empty, irrelevant, or if the documents are empty/unreadable, DO NOT generate a quiz. Instead, populate the 'refusalReason' field with a polite apology explaining why (e.g., "I couldn't find enough information in the files to create a quiz about that topic.").
-      3. The output must be valid JSON matching the schema.`
+      1. If the provided documents contain sufficient information to create a quiz, populate the 'quiz' field in the JSON response.
+      2. If the provided instruction based on topics then also populate the 'quiz' field in the JSON response.
+      3. If the provided instruction contains url and youtubeUrlVideoDetails then also populate the 'quiz' field in the JSON response based on the video details.
+      4. If the provided instruction contains url but not the youtubeUrlVideoDetails then do not populate the 'quiz' field in the JSON response and response with error like we might get trouble while analyzing video.
+      5. If the user input is gibberish, empty, irrelevant, or if the documents are empty/unreadable, DO NOT generate a quiz. Instead, populate the 'refusalReason' field with a polite apology explaining why (e.g., "I couldn't find enough information in the files to create a quiz about that topic.").
+      6. The output must be valid JSON matching the schema.`
     });
 
     const response = await ai.models.generateContent({

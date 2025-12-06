@@ -3,6 +3,7 @@ import ReactMarkdown from 'react-markdown';
 import { Send, Paperclip, FileText, Image as ImageIcon, File, Sparkles, X, BrainCircuit, Plus, Settings2, Check } from 'lucide-react';
 import { Message, MessageRole, FileAttachment, Quiz } from '../types';
 import { fileToBase64, readDocxAsText, readFileAsText } from '../utils/fileUtils';
+import { extractUrls } from '@/utils/extractUrl';
 
 interface ChatInterfaceProps {
   onQuizGenerated: (quiz: Quiz) => void;
@@ -119,7 +120,22 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ onQuizGenerated }) => {
         parts: [{ text: m.text }]
       }));
 
-      const formData = { history , newMessage : userMsg.text, files }
+      const url = extractUrls(userMsg.text);
+      const ytDetails = [];
+
+      if(url.length > 0) {
+        const res = await fetch("/api/yt-transcript", {
+          method: "POST",
+          body: JSON.stringify({ url }),
+        });
+        
+        const data = await res.json();
+
+        if(res) ytDetails.push(data.text)
+        else throw new Error("Failed to fetch transcript");
+      }
+
+      const formData = { history , newMessage : ytDetails.length > 0 ? userMsg.text + " youtubeUrlVideoDetails : " + ytDetails[0] : userMsg.text, files }
       const response = await fetch("/api/generate-text", {
         method: "POST",
         headers: {
@@ -154,7 +170,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ onQuizGenerated }) => {
   };
 
   const handleGenerateQuiz = async () => {
-    const prompt = input; // Capture current input before clearing
+    const prompt = input; 
     setInput('');
     setIsLoading(true);
 
@@ -176,9 +192,25 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ onQuizGenerated }) => {
     }]);
 
     try {
+      const url = extractUrls(prompt);
+
+      const ytDetails = [];
+
+      if(url.length > 0) {
+        const res = await fetch("/api/yt-transcript", {
+          method: "POST",
+          body: JSON.stringify({ url }),
+        });
+        
+        const data = await res.json();
+
+        if(res) ytDetails.push(data.text)
+        else throw new Error("Failed to fetch transcript");
+      }
+
       const formdata = {
         files,
-        instructions : prompt || "Generate a quiz based on the attached files."
+        instructions : ytDetails.length > 0 ? `${prompt} youtubeUrlVideoDetails : ${ytDetails[0]}` : prompt || "Generate a quiz based on the attached files."
       }
 
       const response = await fetch("/api/generate-quiz", {
