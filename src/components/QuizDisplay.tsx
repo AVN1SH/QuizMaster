@@ -49,7 +49,7 @@ const QuizDisplay: React.FC<QuizDisplayProps> = ({ quiz, onBack }) => {
   const percentage = Math.round((score / quiz.questions.length) * 100);
 
   return (
-    <div className="flex flex-col h-full bg-gray-50 max-w-4xl mx-auto p-4 md:p-6 w-full">
+    <div className="flex flex-col h-full bg-gray-50 max-w-4xl mx-auto p-4 md:p-6 w-full text-xs md:text-[16px]">
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <button onClick={onBack} className="text-gray-600 hover:text-gray-900 flex items-center gap-2">
@@ -75,13 +75,13 @@ const QuizDisplay: React.FC<QuizDisplayProps> = ({ quiz, onBack }) => {
         <div className="p-6 py-4 md:p-8 md:py-4 flex-grow overflow-y-auto">
           {!showResults ? (
             <div className="space-y-1">
-              <div className="flex justify-between items-center text-sm font-medium text-gray-500">
+              <div className="flex justify-between items-center text-xs md:text-sm font-medium text-gray-500">
                 <span>Question {currentQuestionIndex + 1} of {quiz.questions.length}</span>
                 <span className="bg-gray-100 px-2 py-1 rounded">Progress: {Math.round(((currentQuestionIndex) / quiz.questions.length) * 100)}%</span>
               </div>
 
               <div className="mt-2">
-                <h2 className="text-xl font-semibold text-gray-800 leading-relaxed">
+                <h2 className="text-lg md:text-xl font-semibold text-gray-800 leading-relaxed">
                   {currentQuestion.question}
                 </h2>
               </div>
@@ -100,12 +100,12 @@ const QuizDisplay: React.FC<QuizDisplayProps> = ({ quiz, onBack }) => {
                         }
                       `}
                     >
-                      <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center flex-shrink-0
+                      <div className={`size-4 md:size-6 rounded-full border-2 flex items-center justify-center flex-shrink-0
                         ${isSelected ? 'border-indigo-600 bg-indigo-600' : 'border-gray-300'}
                       `}>
                         {isSelected && <div className="w-2 h-2 bg-white rounded-full" />}
                       </div>
-                      <span className="font-medium text-lg">{option}</span>
+                      <span className="font-medium text-sm md:text-lg">{option}</span>
                     </button>
                   );
                 })}
@@ -116,15 +116,15 @@ const QuizDisplay: React.FC<QuizDisplayProps> = ({ quiz, onBack }) => {
             <div className="space-y-8 animate-fade-in">
               <div className="text-center space-y-4">
                 <div className="inline-block p-4 rounded-full bg-indigo-100 mb-2">
-                   {percentage >= 70 ? <CheckCircle size={48} className="text-indigo-600" /> : <RefreshCw size={48} className="text-orange-500" />}
+                   {percentage >= 70 ? <CheckCircle className="text-indigo-600 size-6 md:size-12" /> : <RefreshCw className="text-orange-500 size-6 md:size-12" />}
                 </div>
-                <h2 className="text-3xl font-bold text-gray-900">Quiz Completed!</h2>
-                <div className="text-5xl font-extrabold text-indigo-600">{percentage}%</div>
+                <h2 className="text-xl md:text-3xl font-bold text-gray-900">Quiz Completed!</h2>
+                <div className="text-2xl md:text-5xl font-extrabold text-indigo-600">{percentage}%</div>
                 <p className="text-gray-500">You scored {score} out of {quiz.questions.length}</p>
               </div>
 
               <div className="border-t border-gray-200 pt-8">
-                <h3 className="text-xl font-bold mb-4">Review</h3>
+                <h3 className="text-xl font-bold mb-4 text-slate-500">Review</h3>
                 <div className="space-y-6">
                   {quiz.questions.map((q, idx) => {
                     const userAns = selectedAnswers[idx];
