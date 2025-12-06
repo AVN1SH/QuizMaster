@@ -8,8 +8,6 @@ const modelName = 'gemini-2.5-flash';
 export async function POST(req : Request) {
   const {history, newMessage, files} = await req.json();
 
-  console.log(history, newMessage, files)
-
   try {
     const parts = [];
 

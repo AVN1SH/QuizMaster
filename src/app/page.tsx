@@ -19,9 +19,9 @@ const page: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-0 md:p-6 font-sans">
+    <div className="min-h-screen h-screen bg-gray-100 flex items-center justify-center p-0 md:p-6 font-sans">
 
-      <div className={`w-full h-screen md:h-[90vh] max-w-5xl transition-opacity duration-300 ${currentView === AppView.CHAT ? 'block opacity-100' : 'hidden opacity-0'}`}>
+      <div className={`w-full h-full md:h-[90vh] max-w-5xl transition-opacity duration-300 ${currentView === AppView.CHAT ? 'block opacity-100' : 'hidden opacity-0'}`}>
           <ChatInterface onQuizGenerated={handleQuizGenerated} />
       </div>
 

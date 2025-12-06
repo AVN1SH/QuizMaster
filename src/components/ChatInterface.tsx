@@ -128,7 +128,6 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ onQuizGenerated }) => {
         body : JSON.stringify(formData)
       })
       const data = await response.json();
-      console.log(data)
 
       if(response.status === 200) {
         const modelMsg: Message = {
@@ -369,7 +368,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ onQuizGenerated }) => {
                         handleSend();
                     }
                 }}
-                placeholder={activeTool === 'QUIZ' ? "Enter topic or instructions for the quiz..." : "Ask about your documents..."}
+                placeholder={activeTool === 'QUIZ' ? "Enter instruction for the quiz..." : "Ask about your documents..."}
                 className="w-full bg-transparent border-none p-3 focus:ring-0 resize-none max-h-32 min-h-[50px] outline-none text-gray-700"
                 rows={1}
              />
